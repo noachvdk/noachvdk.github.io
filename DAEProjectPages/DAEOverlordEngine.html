@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>DAE Overlord engine</title>
+		<title>DAE Minigin engine</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="../assets/css/main.css" />
@@ -25,8 +25,8 @@
 				<!-- Nav -->
 					<nav id="nav">
 						<ul class="links">
-							<li class="active"><a href="index.html">Portfolio</a></li>
-							<li><a href="AboutMe.html">About Me</a></li>
+							<li class="active"><a href="../index.html">Portfolio</a></li>
+							<li><a href="../AboutMe.html">About Me</a></li>
 						</ul>
 						<ul class="icons">
 							<li><a href="#" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
@@ -40,42 +40,39 @@
 						<!-- Post -->
 							<section class="post">
 								<header class="major">
-									<span class="date">April 25, 2017</span>
-									<h1>Overlord engine</h1>
-									<p>Aenean ornare velit lacus varius enim ullamcorper proin aliquam<br />
-									facilisis ante sed etiam magna interdum congue. Lorem ipsum dolor<br />
-									amet nullam sed etiam veroeros.</p>
+									<h1>Minigin engine</h1>
 								</header>
-								<div class="image main"><img src="images/pic01.jpg" alt="" /></div>
-								<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Curabitur sapien risus, commodo eget turpis at, elementum convallis enim turpis, lorem ipsum dolor sit amet nullam.</p>
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor fermentum. Nullam venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies condimentum. Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In non lorem sit amet elit placerat maximus. Pellentesque aliquam maximus risus. Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum.</p>
+								<p>First off if you would like to take a look at the source code for this project of mine you can take a look at it on my GitHub account which is linked.
+								<br/>Okay so for this project we started from a start project which was capable of rendering some text and pictures. That was the starting point to (re)make this project into a fully functional engine that is capable of running qbert which we also had to make using the engine.
+								<br/>I started off with implementing a decent Update loop. I decided that a fixed update loop wasn't necessary for the scope of this project since physics won't be added. In this step i also added a time manager singleton class that would keep track of the deltatime variable.
+								This way I didn't need to pass the deltatime variable along which could get messy at the cost of a little less clear dependency.
+								<pre><code>while(m_Continue)
+{
+	const auto currentTime = high_resolution_clock::now();
+	const float deltaTime = duration&ltfloat>(currentTime - lastTime).count();
+	time.Update(deltaTime);
+		
+	m_Continue = input.ProcessInput();
+
+	sceneManager.Update();
+	collisionManager.Update();
+	renderer.Render();
+			
+	lastTime = currentTime;
+}</code></pre>
+								My second main concern was implementing a Component system that works with Gameobjects. This way i would replicate the system Unity and Unreal use were i could make a Gameobject to which i could attach different components
+								untill the specified gameobject does what i want it to. An example of a game object with a fps counter <code>auto go = std::make_shared&ltGameObject>(); go->AddComponent(new FpsComponent{ "lingua.otf",24 });</code>
+								<br/> After this i went on to implement an Input manager that works with both keyboard and controller input. Then I added in the command pattern. This way you can easily remap which keys correspond to which action. I also added a Logger to easily Log errors, warnings or info.
+								<pre><code>AddInputAction(InputAction{ 0, SDLK_a, TriggerType::OnPress, ControllerButton::ButtonY, std::make_shared&ltMoveUpLeft>() });
+Logger::GetInstance().Log(LogType::Info, "logging info");</code></pre>
+								Afterwards i started to implement sounds. to overcome having code calling and excecuting sounds in parts of codes where it doesn't belong i used the servicelocator pattern. The soundsystem uses an eventque and runs on a seperate thread. 
+								<br/>I also added in the observer and subject pattern. The level data is read in from a simple text file. This function will also run on a seperate thread. Threading times in the levelparser with shape:
+								<br/>With threading 5.734ms, Without threading 8.094ms.<br/> The UI is done by with the help of ImGUI.</p>
 							</section>
 							<section>
-									<!-- Text stuff -->
-									<h2>Text</h2>
-									<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is <em>emphasized</em>.
-									This is <sup>superscript</sup> text and this is <sub>subscript</sub> text.
-									This is <u>underlined</u> and this is code: <code>for (;;) { ... }</code>.
-									Finally, this is a <a href="#">link</a>.</p>
-									<hr />
-									<!-- Blockquote -->
-									<h2>Blockquote</h2>
-									<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan faucibus. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis.</blockquote>
-
-
-
-									<!-- Preformatted Code -->
-									<h2>Preformatted</h2>
-									<pre><code>i = 0;
-
-									while (!deck.isInOrder()) {
-										print 'Iteration ' + i;
-										deck.shuffle();
-										i++;
-									}
-
-									print 'It took ' + i + ' iterations to sort the deck.';
-									</code></pre>
+								<span class="image fit"><img src="../images/qbert.jpg" alt="" /></span>
+								<span class="image fit"><img src="../images/Minigin.jpg" alt="" /></span>
+								<span class="image fit"><img src="../images/Minigin (2).jpg" alt="" /></span>
 							</section>
 					</div>
 

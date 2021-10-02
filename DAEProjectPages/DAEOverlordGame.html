@@ -25,8 +25,8 @@
 				<!-- Nav -->
 					<nav id="nav">
 						<ul class="links">
-							<li class="active"><a href="index.html">Portfolio</a></li>
-							<li><a href="AboutMe.html">About Me</a></li>
+							<li class="active"><a href="../index.html">Portfolio</a></li>
+							<li><a href="../AboutMe.html">About Me</a></li>
 						</ul>
 						<ul class="icons">
 							<li><a href="#" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
@@ -40,42 +40,48 @@
 						<!-- Post -->
 							<section class="post">
 								<header class="major">
-									<span class="date">April 25, 2017</span>
-									<h1>Overlord Engine <br/>graphics focused game</h1>
-									<p>Aenean ornare velit lacus varius enim ullamcorper proin aliquam<br />
-									facilisis ante sed etiam magna interdum congue. Lorem ipsum dolor<br />
-									amet nullam sed etiam veroeros.</p>
+									<h1>Overlord Engine</h1>
 								</header>
-								<div class="image main"><img src="images/pic01.jpg" alt="" /></div>
-								<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Curabitur sapien risus, commodo eget turpis at, elementum convallis enim turpis, lorem ipsum dolor sit amet nullam.</p>
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor fermentum. Nullam venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies condimentum. Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In non lorem sit amet elit placerat maximus. Pellentesque aliquam maximus risus. Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum.</p>
+								<p>Unlike in the Minigin engine we didn't start from basically nothing for this project seeing as the goal for this was more graphics oriented. During this project I learned how to work with DirectX 11 and how to make materials, shaders, shadowmaps,...
+								<br/>Some examples of the shaders i made are a SpikeyShader, SpriteRenderer, TextRenderer, ShadowmapGenerator and a Ubershader which handles Diffuse,Specular,Ambient,Environment mapping, Normals and opacity.
+								<pre><code>//MAIN PIXEL SHADER (in the Ubershader)
+float4 MainPS(VS_Output input) : SV_TARGET 
+{
+	// NORMALIZE
+	input.Normal = normalize(input.Normal);
+	input.Tangent = normalize(input.Tangent);
+	float3 viewDirection = normalize(input.WorldPosition.xyz - gMatrixViewInverse[3].xyz);
+	//NORMAL
+	float3 newNormal = CalculateNormal(input.Tangent, input.Normal, input.TexCoord);
+	//SPECULAR
+	float3 specColor = CalculateSpecular(viewDirection, newNormal, input.TexCoord);
+	//DIFFUSE
+	float3 diffColor = CalculateDiffuse(newNormal, input.TexCoord);
+	//AMBIENT
+	float3 ambientColor = gColorAmbient * gAmbientIntensity;
+	//ENVIRONMENT MAPPING
+	float3 environmentColor = CalculateEnvironment(viewDirection, newNormal);
+	//FRESNEL FALLOFF
+	environmentColor = CalculateFresnelFalloff(newNormal, viewDirection, environmentColor);
+	//FINAL COLOR CALCULATION
+	float3 finalColor = diffColor + specColor + environmentColor + ambientColor
+	//OPACITY
+	float opacity = CalculateOpacity(input.TexCoord);
+	return float4(finalColor,opacity);
+}
+								</code></pre>
+								I also made some post processing shaders like Antialiasing, Tint, Vignette, Contrast and some others.Ofcourse I then had to make a seperate material class for each of these shaders so i could implement then in the Overlord engine.
+								<br/>Then when all of the shaders, materials, Postprocessing effects, skinning, shadow mapping, particles,.. were all added i then made a simple Chrash Bandicoot style game.
+								The main character and animation were premade in mixamo. And most of the models were found online. But the actual gameplay like collision handling, movement, health and such were all made by me.
+								</p>
 							</section>
 							<section>
-									<!-- Text stuff -->
-									<h2>Text</h2>
-									<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is <em>emphasized</em>.
-									This is <sup>superscript</sup> text and this is <sub>subscript</sub> text.
-									This is <u>underlined</u> and this is code: <code>for (;;) { ... }</code>.
-									Finally, this is a <a href="#">link</a>.</p>
-									<hr />
-									<!-- Blockquote -->
-									<h2>Blockquote</h2>
-									<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan faucibus. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis.</blockquote>
-
-
-
-									<!-- Preformatted Code -->
-									<h2>Preformatted</h2>
-									<pre><code>i = 0;
-
-									while (!deck.isInOrder()) {
-										print 'Iteration ' + i;
-										deck.shuffle();
-										i++;
-									}
-
-									print 'It took ' + i + ' iterations to sort the deck.';
-									</code></pre>
+								<span class="image fit"><img src="../images/Overlord (1).jpg" alt="" /></span>
+								<span class="image fit"><img src="../images/Overlord (2).jpg" alt="" /></span>
+								<span class="image fit"><img src="../images/Overlord (3).jpg" alt="" /></span>
+								<span class="image fit"><img src="../images/Overlord (4).jpg" alt="" /></span>
+								<span class="image fit"><img src="../images/Overlord (5).jpg" alt="" /></span>
+								<span class="image fit"><img src="../images/Overlord (6).jpg" alt="" /></span>
 							</section>
 					</div>
 

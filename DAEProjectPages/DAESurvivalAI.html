@@ -25,8 +25,8 @@
 				<!-- Nav -->
 					<nav id="nav">
 						<ul class="links">
-							<li class="active"><a href="index.html">Portfolio</a></li>
-							<li><a href="AboutMe.html">About Me</a></li>
+							<li class="active"><a href="../index.html">Portfolio</a></li>
+							<li><a href="../AboutMe.html">About Me</a></li>
 						</ul>
 						<ul class="icons">
 							<li><a href="#" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
@@ -40,43 +40,25 @@
 						<!-- Post -->
 							<section class="post">
 								<header class="major">
-									<span class="date">April 25, 2017</span>
 									<h1>Survival AI<br/>
 									With Grid Based Search</h1>
-									<p>Aenean ornare velit lacus varius enim ullamcorper proin aliquam<br />
-									facilisis ante sed etiam magna interdum congue. Lorem ipsum dolor<br />
-									amet nullam sed etiam veroeros.</p>
 								</header>
-								<div class="image main"><img src="images/pic01.jpg" alt="" /></div>
-								<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Curabitur sapien risus, commodo eget turpis at, elementum convallis enim turpis, lorem ipsum dolor sit amet nullam.</p>
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor fermentum. Nullam venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies condimentum. Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In non lorem sit amet elit placerat maximus. Pellentesque aliquam maximus risus. Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum.</p>
+								<p>For this AI i started with a finite state machine with some of the main states being : Exploration, Handling enemy, Seek item, Move into house, Move out of house, Escape purge zone. I'll break down some of the more interesting states.
+								<br/> For the <b>The Exploration state</b> i decided to go Grid based. First off i get the size of the level and make the grid the same size. For this project i subdived the grid into a 4x4 but this could eality be changed.
+								Then in each cell i set 2 checkpoints(Bottom left and Top right). So the AI when in a cell it will wander to the nearest checkpoint and then to the other while exploring anything in it's sight. If it reached noth checkpoints 
+								it will mark that cell as Explored. Them it will wander to the nearest unexplored cell and repeat the process. The cells that have been marked as explored will be reset after a set amount of time.
+								<br><b>The Handling enemy state</b> actually constist of 3 smaller states : Evade enemy, Avoid enemy and shoot enemy. It will trigger the <b>Evade behavior</b> when it's just wandering and doesn't have a gun.
+								In this behavior he will turn away from the enemy. The strength of this turn is based on the direction from the player. The <b>Avoid behavior</b> will instead be triggered when he doesn't have a gun but unlike the avoid 
+								the AI does have a target that it's currently going towards. It will avoid the enemy while still going towards his intial goal. The closer the enemy gets the stronger it will avoid. And laslty there is the <b>Shooting behavior</b>.
+								This behavior will take priority over the Evade and Avoid when the AI has a gun. It will calculate the smallest angle between himself and the closest enemy and then turn to shoot it. When the AI is hit from behind he will also call the behavior and immediatly turn around.
+								<br>Most of the other states are simple blended steering behaviors with some additional logic.</p>
+								<p>The inventory management is also handled by the AI. There are 4 types of items : Food, Medkits, Weapons and garbage. It will immediatly dispose of picked up garbage.
+								For the food and Medkits the AI will decide to use one if one of their respective meters are running low. it will use one faster if they have a lot of the same item.</p>
 							</section>
 							<section>
-									<!-- Text stuff -->
-									<h2>Text</h2>
-									<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is <em>emphasized</em>.
-									This is <sup>superscript</sup> text and this is <sub>subscript</sub> text.
-									This is <u>underlined</u> and this is code: <code>for (;;) { ... }</code>.
-									Finally, this is a <a href="#">link</a>.</p>
-									<hr />
-									<!-- Blockquote -->
-									<h2>Blockquote</h2>
-									<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan faucibus. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis.</blockquote>
-
-
-
-									<!-- Preformatted Code -->
-									<h2>Preformatted</h2>
-									<pre><code>i = 0;
-
-									while (!deck.isInOrder()) {
-										print 'Iteration ' + i;
-										deck.shuffle();
-										i++;
-									}
-
-									print 'It took ' + i + ' iterations to sort the deck.';
-									</code></pre>
+								<span class="image fit"><img src="../images/AI (1).png" alt="" /></span>
+								<span class="image fit"><img src="../images/AI (2).png" alt="" /></span>
+								<span class="image fit"><img src="../images/AI (3).png" alt="" /></span>
 							</section>
 					</div>
 
