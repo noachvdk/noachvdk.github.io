@@ -11,6 +11,30 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="../assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+		<style>
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
+</style>
 	</head>
 	<body class="is-preload">
 
@@ -42,10 +66,68 @@
 								<header class="major">
 									<h1>Minigin engine</h1>
 								</header>
-								<p>First off if you would like to take a look at the source code for this project of mine you can take a look at it on my GitHub account which is linked.
-								<br/>Okay so for this project we started from a start project which was capable of rendering some text and pictures. That was the starting point to (re)make this project into a fully functional engine that is capable of running qbert which we also had to make using the engine.
-								<br/>I started off with implementing a decent Update loop. I decided that a fixed update loop wasn't necessary for the scope of this project since physics won't be added. In this step i also added a time manager singleton class that would keep track of the deltatime variable.
+								<!-- Intro -->
+								<h2>Intro</h2>
+								<p>This project was the exam for a course i had during my time at DAE namely for programming 4. The goal of this course was to learn new programming patterns and some best practices but most importantly how to create and work in an engine.
+								If you would like to take a look at the source code for this project of mine you can take a look at it on my GitHub account which is linked. and if you want to learn more about some of the patterns mentioned before please visit <a href="https://gameprogrammingpatterns.com/">this link</a></p>
+								<!-- Description -->
+								<h2>The Minigin Engine</h2>
+								<p>Okay so for this project we started from a very basic project which was capable of rendering some text and pictures. That was the starting point to (re)make this engine into a fully functional engine that is capable of running qbert which we also had to make using the engine.
+								
+								<!-- <br/>I started off with implementing a decent Update loop. I decided that a fixed update loop wasn't necessary for the scope of this project since physics won't be added. In this step i also added a time manager singleton class that would keep track of the deltatime variable.
 								This way I didn't need to pass the deltatime variable along which could get messy at the cost of a little less clear dependency.
+								<br/>My second main concern was implementing a Component system that works with Gameobjects. This way i would replicate the system Unity and Unreal use were i could make a Gameobject to which i could attach different components
+								untill the specified gameobject does what i want it to.
+								<br/> After this i went on to implement an Input manager that works with both keyboard and controller input. Then I added in the command pattern. This way you can easily remap which keys correspond to which action. I also added a Logger to easily Log errors, warnings or info.
+								Afterwards i started to implement sounds. to overcome having code calling and excecuting sounds in parts of codes where it doesn't belong i used the servicelocator pattern. The soundsystem uses an eventque and runs on a seperate thread. 
+								<br/>I also added in the observer and subject pattern. The level data is read in from a simple text file. This function will also run on a seperate thread. Threading times in the levelparser with shape:
+								<br/>With threading 5.734ms, Without threading 8.094ms.
+								<br/> The UI is done by with the help of ImGUI.</p>-->
+								
+								<!-- list -->
+								<h3>Some implemented patterns:</h3>
+								<ul>
+									<li>Command pattern</li>
+									<li>Service locator pattern</li>
+									<li>Singleton pattern</li>
+									<li>Game loop pattern</li>
+									<li>Update method pattern</li>
+									<li>Component pattern</li>
+									<li>Observer pattern</li>
+									<li>Event queue pattern</li>
+								</ul>
+								<!-- list -->
+								<h3>Game/Engine features:</h3>
+								<ul>
+									<li>Multithreading</li>
+									<li>Logging system</li>
+									<li>SDL audio support</li>
+									<li>Level data read from file</li>
+									<li>Hexagonal grid bases system</li>
+									<li>2D Sprites with animations </li>
+									<li>Menu and UI </li>
+									<li>Keyboard/Controller support </li>
+									<li>3 Game modes</li>
+									<li>3 Levels</li>
+									<li>2D Collision manager</li>
+									<li>Lives,Score and fps systems  </li>
+									<li>AI logic for different enemy types  </li>
+								</ul>
+								<!-- Examples -->
+								<h3>Example Code:</h3>
+								<button type="button" class="collapsible">Adding input actions</button>
+								<div class="content">
+								<pre><code>AddInputAction(InputAction{ 0, SDLK_a, TriggerType::OnPress, ControllerButton::ButtonY, std::make_shared&ltMoveUpLeft>() });;
+								</code></pre></div>
+								
+								<button type="button" class="collapsible">Logging</button>
+								<div class="content">
+								<pre><code>Logger::GetInstance().Log(LogType::Info, "logging info")
+								</code></pre>
+								</div>
+								
+								<button type="button" class="collapsible">Update loop</button>
+								<div class="content">
 								<pre><code>while(m_Continue)
 {
 	const auto currentTime = high_resolution_clock::now();
@@ -60,14 +142,58 @@
 			
 	lastTime = currentTime;
 }</code></pre>
-								My second main concern was implementing a Component system that works with Gameobjects. This way i would replicate the system Unity and Unreal use were i could make a Gameobject to which i could attach different components
-								untill the specified gameobject does what i want it to. An example of a game object with a fps counter <code>auto go = std::make_shared&ltGameObject>(); go->AddComponent(new FpsComponent{ "lingua.otf",24 });</code>
-								<br/> After this i went on to implement an Input manager that works with both keyboard and controller input. Then I added in the command pattern. This way you can easily remap which keys correspond to which action. I also added a Logger to easily Log errors, warnings or info.
-								<pre><code>AddInputAction(InputAction{ 0, SDLK_a, TriggerType::OnPress, ControllerButton::ButtonY, std::make_shared&ltMoveUpLeft>() });
-Logger::GetInstance().Log(LogType::Info, "logging info");</code></pre>
-								Afterwards i started to implement sounds. to overcome having code calling and excecuting sounds in parts of codes where it doesn't belong i used the servicelocator pattern. The soundsystem uses an eventque and runs on a seperate thread. 
-								<br/>I also added in the observer and subject pattern. The level data is read in from a simple text file. This function will also run on a seperate thread. Threading times in the levelparser with shape:
-								<br/>With threading 5.734ms, Without threading 8.094ms.<br/> The UI is done by with the help of ImGUI.</p>
+								</div>
+								
+								<button type="button" class="collapsible">Creating gameobject with component</button>
+								<div class="content">
+								<pre><code>auto go = std::make_shared&ltGameObject>(); go->AddComponent(new FpsComponent{ "lingua.otf",24 });</code></pre>
+								</div>
+								
+								<button type="button" class="collapsible">Getting the soundsytem with the service locator and adding a sound to the queue</button>
+								<div class="content">
+								<pre><code>ServiceLocator::GetSoundSystem().PlaySound("../Data/sounds/fall.wav", SDL_MIX_MAXVOLUME);</code></pre>
+								</div>
+								
+								<button type="button" class="collapsible">Sound system with Event Queue on separate thread </button>
+								<div class="content">
+								<pre><code>SDLAudioSystem()
+: m_IsMuted(false)
+, m_IsPaused(false)
+{
+	m_Thread = std::thread([this]() {this->Update(); });
+}
+~SDLAudioSystem()
+{
+	m_Head = m_Tail;
+	m_Cv.notify_one();
+	if (m_Thread.joinable())
+		m_Thread.join();
+}
+void Update() override
+{
+	do
+	{
+		std::unique_lock<std::mutex> guard(m_Mutex); //unique lock because of the cv
+		if (m_Head != m_Tail)
+		{
+			if (!m_IsMuted)
+			{
+				if (!m_Pending[m_Head].isMusic)
+					playSound(m_Pending[m_Head].path.c_str(), m_Pending[m_Head].volume);
+				else
+					playMusic(m_Pending[m_Head].path.c_str(), m_Pending[m_Head].volume);
+			}
+			m_Head = (m_Head + 1) % MAX_PENDING;
+		}
+
+		if (m_Head == m_Tail)
+		m_Cv.wait(guard);
+	} while (m_Head != m_Tail);
+}</code></pre>
+								</div>
+								
+								<!-- Game -->
+								
 							</section>
 							<section>
 								<span class="image fit"><img src="../images/qbert.jpg" alt="" /></span>
@@ -108,6 +234,22 @@ Logger::GetInstance().Log(LogType::Info, "logging info");</code></pre>
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
 
 	</body>
 </html>

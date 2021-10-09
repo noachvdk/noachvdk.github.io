@@ -11,6 +11,30 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="../assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+		<style>
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
+</style>
 	</head>
 	<body class="is-preload">
 
@@ -42,8 +66,35 @@
 								<header class="major">
 									<h1>Overlord Engine</h1>
 								</header>
-								<p>Unlike in the Minigin engine we didn't start from basically nothing for this project seeing as the goal for this was more graphics oriented. During this project I learned how to work with DirectX 11 and how to make materials, shaders, shadowmaps,...
-								<br/>Some examples of the shaders i made are a SpikeyShader, SpriteRenderer, TextRenderer, ShadowmapGenerator and a Ubershader which handles Diffuse,Specular,Ambient,Environment mapping, Normals and opacity.
+								<!-- Intro -->
+								<h2>Intro</h2>
+								<p>This project was the exam for a course i had during my time at DAE namely for Graphics programming 2. During this course we were tought how to implement graphic features such as DirectX 11,
+								materials, shaders, shadowmaps, and so in a given engine and then lastly we had to make a game in the engine we ourselves had been building up.</p>
+								<!-- Description -->
+								<h2>The Overlord Engine</h2>
+								<p>We were given the Overlord Engine as a base engine that would already allow for 3D rendering with the help of the DirectX11 API and would handle physics throught the help of the PhysX API.
+								During the semester we were thought about certain features which we in turn had to add to the engine ourselves during the semester to flesh out the engine more and in the end make it into an engine capable of creating a game in.
+								It definitly wasn't an easy process but seeing the engine evolve as time went on definitly made the time spend coding and debugging worth it to not even mention the amount of knowledge I obtained by following the course
+								and also by reseaching/solving whatever problems occured during the development.</p>
+								<!-- list -->
+								<h3>Some implemented features:</h3>
+								<ul>
+									<li>Custom Meshes</li>
+									<li>FMOD sound support</li>
+									<li>Sprite/Text rendering</li>	
+									<li>HLSL Shaders</li>
+									<li>Post Processing effects</li>
+									<li>Particle Effects</li>
+									<li>Software/Hardware animations</li>
+									<li>Shadow mapping</li>
+									<li>Character controller</li>
+									<li>Materials</li>
+									<li>Picking</li>
+								</ul>
+								<!-- Examples -->
+								<h3>Example Code:</h3>
+								<button type="button" class="collapsible">Main pixel shader in uber shader</button>
+								<div class="content">
 								<pre><code>//MAIN PIXEL SHADER (in the Ubershader)
 float4 MainPS(VS_Output input) : SV_TARGET 
 {
@@ -69,9 +120,31 @@ float4 MainPS(VS_Output input) : SV_TARGET
 	float opacity = CalculateOpacity(input.TexCoord);
 	return float4(finalColor,opacity);
 }
+								</code></pre></div>
+								<button type="button" class="collapsible">Shadow map generator</button>
+								<div class="content">
+								<pre><code>//Vertex Shader (in the shadow map generator)
+float4 ShadowMapVS_Skinned(float3 position:POSITION, float4 BoneIndices : BLENDINDICES, float4 BoneWeights : BLENDWEIGHTS) : SV_POSITION
+{
+	float4 transformedPosition = 0;
+	float4x4 BoneTransform =0;
+
+	//Skinning Magic...
+	for	(int i = 0; i < 4;i++)
+	{
+		if(BoneIndices[i] > -1)
+		{
+			BoneTransform += gBones[BoneIndices[i]] * BoneWeights[i];
+		}
+	}
+	transformedPosition = mul(float4(position, 1),BoneTransform);
+	return mul ( transformedPosition , mul(gWorld, gLightViewProj));
+}
 								</code></pre>
-								I also made some post processing shaders like Antialiasing, Tint, Vignette, Contrast and some others.Ofcourse I then had to make a seperate material class for each of these shaders so i could implement then in the Overlord engine.
-								<br/>Then when all of the shaders, materials, Postprocessing effects, skinning, shadow mapping, particles,.. were all added i then made a simple Chrash Bandicoot style game.
+								</div>
+								<!-- Game -->
+								<h2>The Game</h2>
+								<p>At the end of the semester we then got a list of 3 allowed video game genres which include Puzzle, Platformer and lastly Twin stick. I chose to make made a platformer based on Chrash Bandicoot.
 								The main character and animation were premade in mixamo. And most of the models were found online. But the actual gameplay like collision handling, movement, health and such were all made by me.
 								</p>
 							</section>
@@ -117,6 +190,23 @@ float4 MainPS(VS_Output input) : SV_TARGET
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			
+			<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
 
 	</body>
 </html>
