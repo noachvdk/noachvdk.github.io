@@ -73,17 +73,6 @@
 								<!-- Description -->
 								<h2>The Minigin Engine</h2>
 								<p>Okay so for this project we started from a very basic project which was capable of rendering some text and pictures. That was the starting point to (re)make this engine into a fully functional engine that is capable of running qbert which we also had to make using the engine.
-								
-								<!-- <br/>I started off with implementing a decent Update loop. I decided that a fixed update loop wasn't necessary for the scope of this project since physics won't be added. In this step i also added a time manager singleton class that would keep track of the deltatime variable.
-								This way I didn't need to pass the deltatime variable along which could get messy at the cost of a little less clear dependency.
-								<br/>My second main concern was implementing a Component system that works with Gameobjects. This way i would replicate the system Unity and Unreal use were i could make a Gameobject to which i could attach different components
-								untill the specified gameobject does what i want it to.
-								<br/> After this i went on to implement an Input manager that works with both keyboard and controller input. Then I added in the command pattern. This way you can easily remap which keys correspond to which action. I also added a Logger to easily Log errors, warnings or info.
-								Afterwards i started to implement sounds. to overcome having code calling and excecuting sounds in parts of codes where it doesn't belong i used the servicelocator pattern. The soundsystem uses an eventque and runs on a seperate thread. 
-								<br/>I also added in the observer and subject pattern. The level data is read in from a simple text file. This function will also run on a seperate thread. Threading times in the levelparser with shape:
-								<br/>With threading 5.734ms, Without threading 8.094ms.
-								<br/> The UI is done by with the help of ImGUI.</p>-->
-								
 								<!-- list -->
 								<h3>Some implemented patterns:</h3>
 								<ul>
@@ -193,12 +182,17 @@ void Update() override
 								</div>
 								
 								<!-- Game -->
-								
+								<span class="image fit"><img src="../Gifs/Qbert.gif" alt="Qbert" />
+								<p>Some gameplay of level 2 .</p></span>
+								<span class="image fit"><img src="../Gifs/QbertChase.gif" alt="QbertChase" />
+								<p>Here you can see coily chasing and killing Qbert.</p></span>
+								<span class="image fit"><img src="../Gifs/QbertDisc.gif" alt="QbertDisc" />
+								<p>Here you can Qbert jumping on a disc and kill coily who jumped off trying to chase him.</p></span>
 							</section>
 							<section>
 								<span class="image fit"><img src="../images/qbert.jpg" alt="" /></span>
-								<span class="image fit"><img src="../images/Minigin.jpg" alt="" /></span>
-								<span class="image fit"><img src="../images/Minigin (2).jpg" alt="" /></span>
+								<span class="image fit"><img src="../images/Minigin.jpg" alt="" /><p>Here you can see the main menu with option to choose 3 functional game modes</p></span>
+								<span class="image fit"><img src="../images/Minigin (2).jpg" alt="" /><p>Here you can see the log</p></span>
 							</section>
 					</div>
 
@@ -207,7 +201,7 @@ void Update() override
 						<section class="split contact">
 							<section>
 								<h3>Email</h3>
-									<p><a href="#">noach.vandekerckhove@student.howest.be</a></p>
+									<p><a href="#">noachvdk@hotmail.com</a></p>
 							</section>
 							<section>
 								<h3>Social</h3>
@@ -221,7 +215,7 @@ void Update() override
 
 				<!-- Copyright -->
 					<div id="copyright">
-						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+						<ul><li>&copy; Noachvdk</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
 					</div>
 
 			</div>

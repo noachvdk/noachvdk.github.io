@@ -11,6 +11,31 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="../assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+		<style>
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
+</style>
+	
 	</head>
 	<body class="is-preload">
 
@@ -50,14 +75,130 @@
 								<h2>A* pathfinding</h2>
 								<p>To tackle the problem of finding the optimal path between an agent and his desired position while also taking in account any potential obstacles we looked into several algorithms.
 								After learning about algorithms such as Dijkstra's algorithma and breadth-first search we were asked to implement the A* pathfinding algorithm</p>
-								<span class="image fit"><img src="../images/APath.jpg" alt="" /></span>
-								<span class="image fit"><img src="../images/APath2.jpg" alt="" /></span>
+								<span class="image fit"><img src="../Gifs/AIPath.gif" alt="AIPath" />
+								<p>Here you can see the algorithm clearly with the grid visible.</p></span>
+								<span class="image fit"><img src="../Gifs/AIPath2.gif" alt="AIPath2" />
+								<p>here you can see the algorithm with the start changing positions.</p></span>
 
 								<!-- Description -->
 								<h2>Navigation meshes</h2>
-								<p>After succesfully implementing the A*Pathfinding algorithm the next step was to implement navigation meshes.</p>
-								<span class="image fit"><img src="../images/Pathfinding.jpg" alt="" /></span>
-								<span class="image fit"><img src="../images/Pathfinding2.jpg" alt="" /></span>
+								<p>After succesfully implementing the A*Pathfinding algorithm the next step was to implement navigation meshes.
+								But what are Navigation meshes? Well they are defined as an abstract data structure used in artificial intelligence applications to aid agents in pathfinding through complicated spaces.</p>
+								<span class="image fit"><img src="../Gifs/AINav.gif" alt="AINav" />
+								<p>Here you can see the algorithm at work.</p></span>
+								<span class="image fit"><img src="../Gifs/AINav2.gif" alt="AINav2" />
+								<p>here you can see the algorithm with the Query visible.</p></span>
+								<span class="image fit"><img src="../Gifs/AINav3.gif" alt="AINav3" />
+								<p>here you can see the algorithm with the portals and query visible.</p></span>
+								
+																<!-- Examples -->
+								<h3>Example Code:</h3>
+								<button type="button" class="collapsible">Get connection with lowest F score</button>
+								<div class="content">
+								<pre><code>std::vector<Connection*>::iterator it = std::find_if(openList.begin(), openList.end(), [lowestF](Connection* connection) 
+{
+	if (connection->GetFCost() == lowestF)
+		return true;
+	return false;
+});
+								</code></pre></div>
+								
+								
+								<button type="button" class="collapsible">Optimizing nav mesh path</button>
+								<div class="content">
+								<pre><code>//Optimize our path using funnel algorithm!
+auto const portals = FindPortals(pNavigationMesh, vPathNodes, pStartNode->GetPosition(), pEndNode->GetPosition());
+vPath = OptimizePortals(portals, pStartNode->GetPosition());
+vPath.push_back(vPathNodes[vPathNodes.size() - 1]->GetPosition()); //Push goal as part of the path
+								</code></pre></div>
+								
+								<button type="button" class="collapsible">Optimize nav mesh path function</button>
+								<div class="content">
+								<pre><code>//=== Private Pathfinder Functions ===
+//--- References ---
+//http://digestingduck.blogspot.be/2010/03/simple-stupid-funnel-algorithm.html
+//https://gamedev.stackexchange.com/questions/68302/how-does-the-simple-stupid-funnel-algorithm-work
+std::vector<Elite::Vector2> NavigationMeshPathfinder::OptimizePortals(const std::vector<Portal>& portals,
+	const Elite::Vector2& startPos) const
+{
+	//P1 == right point of portal, P2 == left point of portal
+	std::vector<Vector2> vPath = {};
+	Vector2 apex = startPos;
+	int apexIndex = 0, leftLegIndex = 0, rightLegIndex = 0;
+	Vector2 rightLeg = portals[rightLegIndex].Line.p1 - apex;
+	Vector2 leftLeg = portals[leftLegIndex].Line.p2 - apex;
+
+	for (unsigned int i = 1; i < static_cast<unsigned int>(portals.size()); ++i)
+	{
+		//--- GET CURRENT PORTAL ---
+		auto portal = portals[i];
+		//--- RIGHT CHECK ---
+		//Create the new right leg = from the apex to the p1 point of the portal
+		Vector2 newRightLeg = portal.Line.p1 - apex;
+		//If going inwards:
+		if (!(Cross(rightLeg, newRightLeg) <= 0.0f))
+		{
+			//Check if we cross over the left leg(Tip: Use Cross again with the leftLeg)
+			//If not crossing over the left leg :
+			if (!(Cross(leftLeg, newRightLeg) > 0.0f))
+			{
+				// Tighten the funnel
+				rightLeg = newRightLeg;
+				rightLegIndex = i;
+			}
+			else
+			{
+				apex += leftLeg;
+				apexIndex = leftLegIndex;
+				unsigned int newIt = apexIndex + 1;
+				i = newIt;
+				leftLegIndex = newIt;
+				rightLegIndex = newIt;
+
+				vPath.push_back(apex);
+				if (newIt < static_cast<unsigned int>(portals.size()))
+				{
+					rightLeg = portals[rightLegIndex].Line.p1 - apex;
+					leftLeg = portals[leftLegIndex].Line.p2 - apex;
+					continue;
+				}
+			}
+		}
+		//If not going inwards, do nothing and just go to the left check.
+
+		//--- LEFT CHECK ---
+		Vector2 newLeftLeg = portal.Line.p2 - apex;
+
+		if ((Cross(leftLeg, newLeftLeg) <= 0.0f))
+		{
+			if ((Cross(rightLeg, newLeftLeg) > 0.0f))
+			{
+				leftLeg = newLeftLeg;
+				leftLegIndex = i;
+			}
+			else
+			{
+				apex += rightLeg;
+				apexIndex = rightLegIndex;
+				unsigned int newIt = apexIndex + 1;
+				i = newIt;
+				leftLegIndex = newIt;
+				rightLegIndex = newIt;
+
+				vPath.push_back(apex);
+				if (newIt < static_cast<unsigned int>(portals.size()))
+				{
+					rightLeg = portals[rightLegIndex].Line.p1 - apex;
+					leftLeg = portals[leftLegIndex].Line.p2 - apex;
+					continue;
+				}
+			}
+		}
+	}
+	return vPath;
+}</code></pre>
+								</div>
+								
 							</section>
 					</div>
 
@@ -66,7 +207,7 @@
 						<section class="split contact">
 							<section>
 								<h3>Email</h3>
-									<p><a href="#">noach.vandekerckhove@student.howest.be</a></p>
+									<p><a href="#">noachvdk@hotmail.com</a></p>
 							</section>
 							<section>
 								<h3>Social</h3>
@@ -80,7 +221,7 @@
 
 				<!-- Copyright -->
 					<div id="copyright">
-						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+						<ul><li>&copy; Noachvdk</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
 					</div>
 
 			</div>
@@ -93,6 +234,22 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
 
 	</body>
 </html>

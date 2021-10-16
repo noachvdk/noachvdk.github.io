@@ -11,6 +11,30 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="../assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+		<style>
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
+</style>
 	</head>
 	<body class="is-preload">
 
@@ -43,20 +67,111 @@
 									<h1>Survival AI<br/>
 									With Grid Based Search</h1>
 								</header>
-								<p>For this AI i started with a finite state machine with some of the main states being : Exploration, Handling enemy, Seek item, Move into house, Move out of house, Escape purge zone. I'll break down some of the more interesting states.
+								<!-- Intro -->
+								<h2>Intro</h2>
+								<p>This project was the exam for the gameplay programming course. During this course we learned a lot about AI with topics such as steering behaviours, flow fields, Space partitioning and pathfinding.
+								The framework for this project was provide to us by the school.</p>
+								<!-- Description -->
+								<h2>The AI</h2>
+								<p>For this AI I started with a finite state machine with some of the main states being : Exploration, Handling enemy, Seek item, Move into house, Move out of house, Escape purge zone. I'll break down some of the more interesting states.
 								<br/> For the <b>The Exploration state</b> i decided to go Grid based. First off i get the size of the level and make the grid the same size. For this project i subdived the grid into a 4x4 but this could eality be changed.
 								Then in each cell i set 2 checkpoints(Bottom left and Top right). So the AI when in a cell it will wander to the nearest checkpoint and then to the other while exploring anything in it's sight. If it reached noth checkpoints 
-								it will mark that cell as Explored. Them it will wander to the nearest unexplored cell and repeat the process. The cells that have been marked as explored will be reset after a set amount of time.
-								<br><b>The Handling enemy state</b> actually constist of 3 smaller states : Evade enemy, Avoid enemy and shoot enemy. It will trigger the <b>Evade behavior</b> when it's just wandering and doesn't have a gun.
+								it will mark that cell as Explored. Them it will wander to the nearest unexplored cell and repeat the process. The cells that have been marked as explored will be reset after a set amount of time.</p>
+								<span class="image fit"><img src="../Gifs/AIExploration.gif" alt="AIExploration" />
+								<p>Here you can see the AI wandering to the marked point in the Cell.</p></span>
+								<span class="image fit"><img src="../Gifs/AIHouse.gif" alt="AIHouse" />
+								<p>Here you can see the AI exploring a house.</p></span>
+								<p><b>The Handling enemy state</b> actually constist of 3 smaller states : Evade enemy, Avoid enemy and shoot enemy. It will trigger the <b>Evade behavior</b> when it's just wandering and doesn't have a gun.
 								In this behavior he will turn away from the enemy. The strength of this turn is based on the direction from the player. The <b>Avoid behavior</b> will instead be triggered when he doesn't have a gun but unlike the avoid 
 								the AI does have a target that it's currently going towards. It will avoid the enemy while still going towards his intial goal. The closer the enemy gets the stronger it will avoid. And laslty there is the <b>Shooting behavior</b>.
-								This behavior will take priority over the Evade and Avoid when the AI has a gun. It will calculate the smallest angle between himself and the closest enemy and then turn to shoot it. When the AI is hit from behind he will also call the behavior and immediatly turn around.
-								<br>Most of the other states are simple blended steering behaviors with some additional logic.</p>
-								<p>The inventory management is also handled by the AI. There are 4 types of items : Food, Medkits, Weapons and garbage. It will immediatly dispose of picked up garbage.
+								This behavior will take priority over the Evade and Avoid when the AI has a gun. It will calculate the smallest angle between himself and the closest enemy and then turn to shoot it. When the AI is hit from behind he will also call the behavior and immediatly turn around.</p>
+								<span class="image fit"><img src="../Gifs/AIEvade.gif" alt="AIEvade" />
+								<p>Here you can see the AI evading an enemy while goint to the previously seen house.</p></span>
+								<span class="image fit"><img src="../Gifs/AIEnemy.gif" alt="AIEnemy" />
+								<p>Here you can see the AI handling enemies.</p></span>
+								
+								<p>Most of the other states are simple blended steering behaviors with some additional logic.
+								<br/>The <b>inventory management</b> is also handled by the AI. There are 4 types of items : Food, Medkits, Weapons and garbage. It will immediatly dispose of picked up garbage.
 								For the food and Medkits the AI will decide to use one if one of their respective meters are running low. it will use one faster if they have a lot of the same item.</p>
+								
+								<!-- Examples -->
+								<h3>Example Code:</h3>
+								<button type="button" class="collapsible">Create grid</button>
+								<div class="content">
+								<pre><code>void Grid::CreateGrid(int size)
+{
+	float cellWidth = m_WorldInfo.Dimensions.x / size;
+	float cellHeight = m_WorldInfo.Dimensions.y / size;
+
+	float startX = m_WorldInfo.Center.x - ((size / 2) * cellWidth) + (cellWidth / 2);
+	float startY = m_WorldInfo.Center.y + ((size / 2) * cellHeight) - (cellHeight / 2);
+
+	Vector2 startCenter{ startX,startY };
+	int id{ 0 };
+	float offset{ 20.0f };
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			id++;
+			Cell* pCell = new Cell(id, startCenter, cellWidth, cellHeight);
+			pCell->CreateCheckpoints(offset);
+			m_Cells.push_back(pCell);
+			startCenter.x += cellWidth; 
+		}
+		startCenter.x = startX;
+		startCenter.y -= cellHeight;
+	}
+}
+								</code></pre></div>
+								
+								<button type="button" class="collapsible">Avoid enemy behaviour</button>
+								<div class="content">
+								<pre><code>void Plugin::AvoidEnemy(bool& enemyFound, IExamInterface* interface, Vector2& avoid, SteeringPlugin_Output& steering, Vector2& seek)
+{
+	auto agentInfo = interface->Agent_GetInfo();
+	steering.RunMode = true;
+	//Ratio
+	float ratio = 1-(Distance(avoid, agentInfo.Position) / agentInfo.FOV_Range);
+	std::cout << ratio  <<"\n";
+	ratio = std::fmin(ratio, 0.5f);
+	//Desired Velocity avoid
+	Vector2 avoidDir = (agentInfo.Position - avoid); 
+	avoidDir = RescaleVector(avoidDir, ratio);
+	//Desired Velocity seek
+	const Vector2 temp = interface->NavMesh_GetClosestPathPoint(seek);
+	Vector2 seekDir = temp - agentInfo.Position; 
+	seekDir = RescaleVector(seekDir, 1-ratio);
+	steering.LinearVelocity = seekDir + avoidDir;
+	steering.LinearVelocity = RescaleVector(steering.LinearVelocity, agentInfo.MaxLinearSpeed);
+}</code></pre>
+								</div>
+								
+								<button type="button" class="collapsible">Aiming at enemy logic </button>
+								<div class="content">
+								<pre><code>auto agentInfo = interface->Agent_GetInfo();
+float angle{};
+const Vector2 lookAt{ GetLookAtVector(agentInfo.Orientation) };
+steering.LinearVelocity = { 0,0 };
+steering.AutoOrientate = false;
+Vector2 shortestDistance{ float(INFINITE),float(INFINITE)};
+for (size_t i = 0; i < enemies.size(); i++)
+{
+	Vector2 dir{ enemies[i] - agentInfo.Position };
+	if (dir.Magnitude() < shortestDistance.Magnitude())
+		shortestDistance = dir;
+}
+//Determine sign
+const Vector2 temp{ target - agentInfo.Position };
+const float cross = Cross(lookAt, temp);4
+if (cross < 0.f)steering.AngularVelocity = -agentInfo.MaxAngularSpeed;
+else steering.AngularVelocity = agentInfo.MaxAngularSpeed;</code></pre>
+								</div>
+								
+								<!-- Game -->
+								
 							</section>
 							<section>
-								<span class="image fit"><img src="../images/AI (1).png" alt="" /></span>
 								<span class="image fit"><img src="../images/AI (2).png" alt="" /></span>
 								<span class="image fit"><img src="../images/AI (3).png" alt="" /></span>
 							</section>
@@ -67,7 +182,7 @@
 						<section class="split contact">
 							<section>
 								<h3>Email</h3>
-									<p><a href="#">noach.vandekerckhove@student.howest.be</a></p>
+									<p><a href="#">noachvdk@hotmail.com</a></p>
 							</section>
 							<section>
 								<h3>Social</h3>
@@ -77,11 +192,11 @@
 								</ul>
 							</section>
 						</section>
-					</footer>
+					</footer>S
 
 				<!-- Copyright -->
 					<div id="copyright">
-						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+						<ul><li>&copy; Noachvdk</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
 					</div>
 
 			</div>
@@ -94,6 +209,22 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
 
 	</body>
 </html>
