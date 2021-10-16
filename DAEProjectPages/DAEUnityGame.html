@@ -11,6 +11,31 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="../assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+				<style>
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
+</style>
+	
 	</head>
 	<body class="is-preload">
 
@@ -42,11 +67,74 @@
 								<header class="major">
 									<h1>Unity game</h1>
 								</header>
+								<!-- Intro -->
+								<h2>Intro</h2>
 								<p>This parkour focused game the main mechanic is a time slow which slows down certain objects including yourself but you still keep your momentum.
 								So the difficulty here lies in the balancing getting some momentum to be able to jump further and slowing down time to be able to land on a platforn that otherwise would be moving to fast.<br/>
 								The other main element is ofcourse the movement. You are able to wallrun, walljump but be carefull you can't wallrun forever or you will start to slide down the wall and evetually fall off.
 								You can reset this by jumpimg to a different wall. You also have to be carefull of camera's which will slowly detect you or laser which instantly will detect you. Once you get detected you will rewind to the last checkpoint 3 times.
 								After 3 rewinds it's do or die.</p>
+								<span class="image fit"><img src="../Gifs/UnityPuzzle.gif" alt="UnityPuzzle" />
+								<p>Here you can see the player slowing down time to be able to jump across the platforms that otherwise would be moving too fast.</p></span>
+								<span class="image fit"><img src="../Gifs/UnityPuzzle2.gif" alt="UnityPuzzle2" />
+								<p>Here you can see the player making his way trough some laser fields.</p></span>
+								<span class="image fit"><img src="../Gifs/UnityWallrun.gif" alt="UnityWallrun" />
+								<p>Learning the basis of the wallruning.</p></span>
+								<span class="image fit"><img src="../Gifs/UnityWallrun2.gif" alt="UnityWallrun2" />
+								<p>Here you can see the player sliding of a wall when he takes too long. To cross the gap he need to jump back and forth.</p></span>
+								<span class="image fit"><img src="../Gifs/UnityWallrun3.gif" alt="UnityWallrun3" />
+								<p>All of the wallrunning experience coming to the test.</p></span>
+								
+								
+								<!-- Examples -->
+								<h3>Example Scripts:</h3>
+								<button type="button" class="collapsible">Plsy sound</button>
+								<div class="content">
+								<pre><code>SoundManager.Instance.PlaySound("Spotted");</code></pre>
+								</div>
+								<button type="button" class="collapsible">Some early checks</button>
+								<div class="content">
+								<pre><code>//GroundCheck
+isGrounded = Physics.CheckSphere(_groundCheck.position, _groundDistance, _groundMask);
+if (_isGrounded && _velocity.y < 0)
+{
+	_velocity = new Vector3(0, 0, 0);
+	_velocity.y = -2f;//not 0 to make sure the player is forced down
+	_canWallJump = true;
+	_isWallRunning = false;
+}
+//WallCheck
+_nearWall = Physics.CheckSphere(_groundCheck.position, _wallDistance, _wallRunMask); //just to check if there is something
+RaycastHit hit = IsRightOrLeftHit(); //actual raycast to get hit obj
+if (hit.collider != _prevWall.collider && hit.collider != null && _nearWall == true)
+{
+    _canWallJump = true;
+}//to make it able to jump wall to wall but not wall to same wall
+if (_isGrounded)
+{
+    _nearWall = false;
+    _wallRunCurrentTime = _wallRunMaxTime;
+}
+if (!_nearWall)
+    _isWallRunning = false;
+}								</code></pre></div>
+								
+								<button type="button" class="collapsible">Camera tilt and speed boost when wallrunning</button>
+								<div class="content">
+								<pre><code>if (_isWallRunning) 
+{
+    if (_onRightSide)
+        _camera.transform.localRotation = Quaternion.Lerp(_camera.transform.localRotation, Quaternion.Euler(0, _camera.transform.localRotation.y, _wallRunCameraTiltAngle), 0.10f) ;
+    else
+        _camera.transform.localRotation = Quaternion.Lerp(_camera.transform.localRotation, Quaternion.Euler(0, _camera.transform.localRotation.y, -_wallRunCameraTiltAngle), 0.10f);
+    _controller.Move(move * _moveSpeed/2.0f * Time.unscaledDeltaTime);
+} // tilt camera when wallrunning and small speed boost</code></pre>
+								</div>
+								
+								<!-- Game -->
+								
+							</section>
+								
 							</section>
 							<section>
 								<span class="image fit"><img src="../images/UnityGame (1).jpg" alt="" /></span>
@@ -62,7 +150,7 @@
 						<section class="split contact">
 							<section>
 								<h3>Email</h3>
-									<p><a href="#">noach.vandekerckhove@student.howest.be</a></p>
+									<p><a href="#">noachvdk@hotmail.com</a></p>
 							</section>
 							<section>
 								<h3>Social</h3>
@@ -76,7 +164,7 @@
 
 				<!-- Copyright -->
 					<div id="copyright">
-						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+						<ul><li>&copy; Noachvdk</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
 					</div>
 
 			</div>
@@ -89,6 +177,22 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+						<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
 
 	</body>
 </html>
