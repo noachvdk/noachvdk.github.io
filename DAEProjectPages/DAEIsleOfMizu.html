@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>DAE Isle Of Mizu</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<p style="text-align:center;">Welcome to my aspiring Game Developer website.<br> here you can find both my portfolio and some information about me.</p>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li class="active"><a href="../index.html">Portfolio</a></li>
+							<li><a href="../AboutMe.html">About Me</a></li>
+						</ul>
+						<ul class="icons">
+							<li><a href="https://www.linkedin.com/in/noach-vandekerckhove-0284bb222/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+							<li><a href="https://github.com/noachvdk" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<h1>Isle Of Mizu</h1>
+								</header>
+								<!-- Intro -->
+								<span class="image fit"><img src="../images/IsleOfMizuLogo.png" alt="Normal bridge" /></span>
+								<h2>Intro</h2>
+								<p>The isle of Mizu is Third-person Story-driven game with puzzle mechanics. The game is inspired by Japanese culture and folklore. It is made in Unreal Engine 4.
+								<br/><b>Disclaimers:</b> First of all this was a group project so not everything you see is made by me. However as the only programmer all the code and was written by me in C++. Secondly the project is still under development as of now.</p>
+								<h3>The team consisted of:</h3>
+								<ul>
+									<li>Alex Dekeyser (Artist)</li>
+									<li>Ricardo Dias Teixeira(Artist)</li>
+									<li>Hunor Vass Kacso(Artist)</li>
+									<li>Willem Verheughe (Artist)</li>
+									<li>Noach Vandekerckhove (Programmer)</li>
+								</ul>
+								<!-- Description -->
+								<h2>Features/Mechanics</h2>
+								<h3>The Yokai world</h3>
+								<p>The most important mechanic in our game is the abitlity to switch between the normal world and the Yokai world. The changes between worlds aren't only visual but instead have a signicant impact and this ability will be needed to solve the puzzle in the game. </p>
+									
+								<span class="image fit"><img src="../images/IsleOfMizuBridgeNormal.png" alt="Normal bridge" /> <img src="../images/IsleOfMizuBridgeYokai.png" alt="Yokai bridge" />
+								<p>To cross the small stream you have to switch worlds.</p></span>
+								
+								
+								<h3>The Frog Puzzle</h3>
+								<p>The first real puzzle you will encounter in the game will be the Frog puzzle. To complete this puzzle you will have to traverse a maze like forest to reach the next puzzle.
+								Ofcourse there are plenty of obstacles in the way to prevent you from reaching it safely. First off all most of the roads will be blocked sooner or later by fallen trees, structures, or other obstacles.
+								To get past these you will need to either find a way around or check if the obstacles appears in the other world.</p>
+								<span class="image fit"><img src="../Gifs/IsleOfMizuFrogCapture.gif" alt="Frog capture" />
+								<p>Some gameplay of the player getting caught.</p></span>
+								
+								<p>The main difficulty for this puzzle lies within the frogs lurking around the forest. They can detect the player with both their sense of sight and smell(Using the Unreal Engine AI perception).
+								As for the sight the faster you move the faster they will detect you so slowly making your way through the forest is advised. For the hearing however while walking slowly aslo helps reduce the noise your footsteps make
+								the real danger is caused by all the branches lying around in the forest which when stepped on make a sound that will instantly wake any frog close to it.</p>
+								<span class="image fit"><img src="../Gifs/IsleOfMizuFrogSucces.gif" alt="Frog sneak" />
+								<p>Some gameplay showcasing both sneaking past the frog and the obstacles changing depending on the world .</p></span>
+							    <span class="image fit"><img src="../images/IsleOfMizuFrogDetection.png" alt="AI perception" />
+								<p>Here you can see the AI perception at work. The green orb shows the last seen position and yellow the last heard position.</p></span>
+								
+								<h3>The Pillar Puzzle</h3>
+								<p>Soon after you escaped the Frog puzzle you will find your way to the Pillar puzzle. To complete this puzzle you will have to traverse a river by platforming around moving pillars.
+								In the normal world the pillars move slight above and below the water line which makes timing your jumps important to avoid being swept away by the water and dying. In the Yokai world however, you can see
+								a strange fish like Yokai swimming through the pillars which makes them temporarily float up. Unfortunalty you can't jump on the pillars when you are in the Yokai world.
+								<br/>To solve this puzzle you have to carefully time when to activate Shrines scattered around the river. These shrines stop the movement of the pillars no matter what world they are in.
+								This way you can make the pillars float up in the Yokai world. Pause the Pillars using the shrines and then switch back to the normal world to try and jump across the platforms before they resmume moving.</p>
+								<span class="image fit"><img src="../Gifs/IsleOfMizuPillarFailed.gif" alt="Pillar failed" />
+								<p>Some gameplay of the player failing the platforming part of the puzzle.</p></span>
+								
+								<h3>The Pressure plate Puzzle</h3>
+								<p>The main puzzle you will encounter in the Isle Of Mizu is a pressure plate puzzle. There are several pressure plates scattered around an ancient temple all of which have some sort of marking on them.
+								Around the temple you can also find several small statues that you can pick up and place upon the pressure plates to activate them. Activating some plates will cause the water to rise eventually filling the temple and killing the player.
+								While other plates seem to activate a stair mechanism.
+								<br/>To find out which are the right plates you will have to look around the temple. Some of the markings which can be found on the pressure plates can also be found in the temple if you are observant. You might need to check both worlds before you find all the markings.</p>
+								<span class="image fit"><img src="../Gifs/IsleOfMizuPillarSucces.gif" alt="Pillar succes" />
+								<p>Some gameplay of the player figuring out the pillar puzzle.</p></span>
+								
+								<h3>The Yokai</h3>
+								<p>Outside of the 3 main puzzles there are some other Yokai scattered around the map. The first one you encounter is a Fox yokai that tells you the story as you progress through the game and also serves as a guide for the puzzles providing hints.</p>
+								<span class="image fit"><img src="../images/IsleOfMizuDialog.png" alt="Dialog" />
+								<p>Here you can see the starting dialog of the game.</p></span>
+								<p>Most of the other yokai aren't as helpfull. Most just wander around aimlessly while a few patrol certain area's. But almost all of them will immediatly start to chase you when you get too close.</p>
+								<span class="image fit"><img src="../Gifs/IsleOfMizuYokaiWander.gif" alt="Wander" />
+								<p>Here you can see the Yokai wandering about.</p></span>
+								<span class="image fit"><img src="../Gifs/IsleOfMizuYokaiChase.gif" alt="Chase" />
+								<p>Here you can see the Yokai chasing the player when he got too close.</p></span>
+
+								<!-- list -->
+								<h3>Other noteworthy features:</h3>
+								<ul>
+									<li>Checkpoint system</li>
+									<li>Saving/Loading via json file</li>
+									<li>Primitve dialog system via CSV file</li>	
+									<li>Keyboard and mouse/Controller support</li>
+									<li>Cutscene system both in game and pre rendered</li>
+									<li>Collectible system</li>
+									<li>Multiple AI behaviours some with AI perception</li>
+									<li>Loading screen</li>
+								</ul>
+								
+								<span class="image fit"><img src="../Gifs/IsleOfMizuCollectible.gif" alt="Collectible" />
+								<p>Here you can see a collectible being picked up.</p></span>
+								<p>The game is still in development but we hope to release it on both Itch.io and steam.</p>
+							<section>
+								<!-- Trailer -->
+								<h2>Trailer</h2>
+								<p>The game is still in development so the trailer will be coming soon.</p>
+<!-- Footer<iframe width="1080" height="720" src="https://www.youtube.com/embed/cpI7kU3hxbY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+							</section>
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<section class="split contact">
+							<section>
+								<h3>Email</h3>
+									<p><a href="#">noachvdk@hotmail.com</a></p>
+							</section>
+							<section>
+								<h3>Social</h3>
+								<ul class="icons alt">
+								<li><a href="https://www.linkedin.com/in/noach-vandekerckhove-0284bb222/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>	
+								<li><a href="https://github.com/noachvdk" class="icon brands fa-github"><span class="label">GitHub</span></a></l
+								</ul>
+							</section>
+						</section>
+					</footer>
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; NoachVdk</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
