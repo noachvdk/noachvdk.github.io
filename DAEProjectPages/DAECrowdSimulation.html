@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>DAE Crowd Simulation</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<p style="text-align:center;">Welcome to my aspiring Game Developer website.<br> here you can find both my portfolio and some information about me.</p>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li class="active"><a href="../index.html">Portfolio</a></li>
+							<li><a href="../AboutMe.html">About Me</a></li>
+						</ul>
+						<ul class="icons">
+							<li><a href="https://www.linkedin.com/in/noach-vandekerckhove-0284bb222/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+							<li><a href="https://github.com/noachvdk" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<h1>Heterogenous Crowd Simulation</h1>
+								</header>
+							
+								<h2>Intro</h2>
+								<p>For my graduation work I attempted to create a heterogeneous crowd simulation in UE4 using trait theory as the main mechanic to diversify the crowd behavior and appearance.
+								On this page I will only focus on the technical aspects of the simulation I created however if you are interested in reading the full paper, <a href="../Documents/Paper.pdf"><b>please click here to view the full paper</b></a>. I explain the trait theory in more detail and I show all the research that went into creating the paper and simulation.</p>
+								<!-- Pathing Description -->
+								<h2>Pathing</h2>
+								<h3>Pathfinding system</h3>
+								<p>The base of the pathing mechanic is done by creating a custom path outline that the npc's will be able to follow. After doing some research I found a suitable base implementation and converted their implementation into C++ and expanded upon their version to better suit the needs of my crowd simulation.
+								It works simply by placing some splines around the general area where you would like the npc's to walk. Once the simulation starts it will spawn some waypoints which the npc's will use the decide where to walk to.</p>
+								<span class="image fit"><img src="../images/PathingExample.jpg" alt="pathing example" />
+								<p>A thumbnail of one of the videos I used for the base implementation.</p></span>
+								<span class="image fit"><img src="../images/PathingDebug.png" alt="pathing debug" />
+								<p>Here you can see an npc finding a pathpoint using a sphere raycast.</p></span>
+								
+								<!-- Pathing Description -->
+								<h3>areas navigation areas</h3>
+								<p>The second main part of the pathing system is the custom navigation areas and how they work with the navigation query filters. I expanded on the basic navigation mesh feature of UE4 by creating a few custom areas that can represent streets, sidewalks, parks, building, etc...</p>
+								<span class="image fit"><img src="../images/NavMeshLevel.png" alt="level nav mesh" />
+								<p>A view of the level navigation mesh.</p></span>
+								<span class="image fit"><img src="../images/CustomNavArea.png" alt="level nav mesh" />
+								<p>A look at some of the settings of the custom nav areas.</p></span>
+								
+								<!-- query Description -->
+								<h3>Custom navigation query filters</h3>
+								<p>Lastly, I also used custom navigation query filters that are closely coupled with the use of the aforementioned UE4 navigation areas. 
+								These custom query filters made it possible to customize the cost for certain navigation area types for each npc that had that specific query filter. 
+								For example as you can see in the 2 gifs below the same npc with the same navigation areas would always choose to go to the blue path if the query filter made it cheaper for that npc and vice versa. 
+								By combining these 2 elements I was able to create some variety within the npc behavior already.</p>
+								
+								<span class="image fit"><img src="../Gifs/QueryBlue.gif" alt="Blue query" />
+								<p>Navigation where the query makes the blue cost lower.</p></span>
+								<span class="image fit"><img src="../Gifs/QueryRed.gif" alt="Red query" />
+								<p>Navigation where the query makes the red cost lower.</p></span>
+								<span class="image fit"><img src="../images/NavQuery.png" alt="nav query" />
+								<p>A look at some of the settings of the custom query filter.</p></span>
+								<!-- Steering Description -->
+								<h2>Steering behaviors </h2>
+								<p>The implementation for most of these steering behaviors is fairly basic. However depending on the individual traits of each npc the blending between these different steering behaviors would become different. Resulting in slightly different behavior for each npc.
+								Also for the avoidance behavior I opted to use the UE4 native RVO avoidance.</p>
+								<h4>Steering behaviors:</h4>
+								<ul>
+									<li>Seek</li>
+									<li>Wander</li>
+									<li>Cohesion and separation </li>	
+									<li>Avoidance</li>
+								</ul>
+								<span class="image fit"><img src="../images/CrowdWander.png" alt="npc steering" />
+								<p>A picture of the different steering forces on an npc.</p></span>
+								<span class="image fit"><img src="../Gifs/NoRVO.gif" alt="no RVO" />
+								<p>A video of without RVO avoidance in action.</p></span>
+								<span class="image fit"><img src="../Gifs/RVO.gif" alt="RVO" />
+								<p>A video of RVO avoidance in action.</p></span>
+								
+								<!-- Personality Description -->
+								<h3>Trait theory</h3>
+								<p>As mentioned before both personality and anthropometric traits were implemented in this crowd simulation to create more diversity in both behavior and appearance. If you are interested in finding out how they were researched and applied please take a look at the paper which has been linked in the introduction.</p>				
+								<span class="image fit"><img src="../images/NPCTraits.png" alt="npc traits" />
+								<p>A screenshot of the simulation in action.</p></span>
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<section class="split contact">
+							<section>
+								<h3>Email</h3>
+									<p><a href="#">noachvdk@hotmail.com</a></p>
+							</section>
+							<section>
+								<h3>Social</h3>
+								<ul class="icons alt">
+								<li><a href="https://www.linkedin.com/in/noach-vandekerckhove-0284bb222/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>	
+								<li><a href="https://github.com/noachvdk" class="icon brands fa-github"><span class="label">GitHub</span></a></l
+								</ul>
+							</section>
+						</section>
+					</footer>
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; NoachVdk</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
